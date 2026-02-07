@@ -1,11 +1,20 @@
 @import "tailwindcss";
 
+/* PharmaShe Color Palette */
 :root {
+  --color-white: #ffffff;
+  --color-magenta: rgb(163, 75, 103);
+  --color-light-pink: rgb(205, 160, 177);
+  --color-blue: rgb(86, 109, 150);
   --background: #ffffff;
   --foreground: #171717;
 }
 
 @theme inline {
+  --color-white: #ffffff;
+  --color-magenta: rgb(163, 75, 103);
+  --color-light-pink: rgb(205, 160, 177);
+  --color-blue: rgb(86, 109, 150);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -14,7 +23,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #0f0f0f;
     --foreground: #ededed;
   }
 }
@@ -23,4 +32,21 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Custom utility classes */
+.btn-primary {
+  @apply px-6 py-3 bg-[rgb(163,75,103)] text-white rounded-lg font-semibold hover:bg-[rgb(143,55,83)] transition-colors;
+}
+
+.btn-secondary {
+  @apply px-6 py-3 bg-[rgb(86,109,150)] text-white rounded-lg font-semibold hover:bg-[rgb(66,89,130)] transition-colors;
+}
+
+.card {
+  @apply bg-white border border-[rgb(205,160,177)] rounded-lg p-6 shadow-sm;
+}
+
+.gradient-header {
+  @apply bg-gradient-to-r from-[rgb(163,75,103)] to-[rgb(86,109,150)] text-white;
 }

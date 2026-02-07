@@ -1,0 +1,14 @@
+{
+  "name": "innovateher-pharmashe",
+  "private": true,
+  "description": "PharmaShe app lives in my-app/",
+  "workspaces": [
+    "my-app"
+  ],
+  "scripts": {
+    "dev": "npm run dev --prefix my-app",
+    "build": "npm run build --prefix my-app",
+    "start": "npm run start --prefix my-app",
+    "lint": "npm run lint --prefix my-app"
+  }
+}
