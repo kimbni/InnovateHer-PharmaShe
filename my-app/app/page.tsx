@@ -4,7 +4,6 @@ import { useState } from "react";
 import Link from "next/link";
 import DrugSearch from "./components/drugSearch";
 import AnalysisResults from "./components/analysisResults";
-import { analyzeDrugInteractions } from "@/lib/gemini";
 
 export default function Home() {
   const [analysis, setAnalysis] = useState<string | null>(null);
@@ -18,8 +17,17 @@ export default function Home() {
     setSelectedDrugs(drugs);
 
     try {
-      const result = await analyzeDrugInteractions(drugs, "women's health analysis");
-      setAnalysis(result);
+      const res = await fetch("/api/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          drugs,
+          context: "women's health analysis",
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.details ?? data.error ?? "Analysis failed");
+      setAnalysis(data.analysis);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Failed to analyze drugs";
       setError(errorMessage);

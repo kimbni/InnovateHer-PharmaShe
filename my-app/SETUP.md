@@ -41,7 +41,7 @@ PharmaShe is a comprehensive drug analysis platform specifically designed to ana
 
    Edit `.env.local` and add your Gemini API key:
    ```
-   NEXT_PUBLIC_GEMINI_API_KEY=your_actual_api_key_here
+   GEMINI_API_KEY=your_actual_api_key_here
    ```
 
    **How to get a Gemini API Key:**
