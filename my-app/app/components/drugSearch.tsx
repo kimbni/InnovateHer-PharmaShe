@@ -95,7 +95,11 @@ export default function DrugSearch({ onSearch, isLoading = false }: DrugSearchPr
               }
             }}
             placeholder="Enter drug name (e.g., Ibuprofen, Metformin)"
-            className="flex-1 px-4 py-2 border border-[rgb(205,160,177)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[rgb(163,75,103)]"
+            className="flex-1 px-4 py-2 border border-[rgb(205,160,177)] rounded-lg
+                                 focus:outline-none focus:ring-2 focus:ring-[rgb(163,75,103)]
+                                 text-gray-800 dark:text-gray-100
+                                 placeholder:text-gray-400 dark:placeholder:text-gray-500"
+
             disabled={isLoading}
           />
           <button
