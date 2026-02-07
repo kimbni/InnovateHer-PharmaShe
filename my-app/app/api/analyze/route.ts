@@ -3,7 +3,7 @@ import { analyzeDrugInteractions } from "@/lib/gemini";
 
 export async function POST(request: NextRequest) {
   try {
-    const { drugs, context } = await request.json();
+    const { drugs, context, profile } = await request.json();
 
     if (!drugs || !Array.isArray(drugs) || drugs.length === 0) {
       return NextResponse.json(
@@ -12,7 +12,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const analysis = await analyzeDrugInteractions(drugs, context || "women's health analysis");
+    const analysis = await analyzeDrugInteractions(
+      drugs,
+      context || "women's health analysis",
+      profile ?? null
+    );
 
     return NextResponse.json({
       success: true,
