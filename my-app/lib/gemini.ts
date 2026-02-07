@@ -21,10 +21,50 @@ function getClient(): GoogleGenAI {
 
 const DEFAULT_MODEL = "gemini-3-flash-preview";
 
+/** Profile data sent from client (from localStorage) for personalized analysis */
+export interface AnalysisProfile {
+  heightCm?: string;
+  weightKg?: string;
+  underlyingConditions?: string;
+  concerns?: string;
+}
+
+function formatProfileForPrompt(profile: AnalysisProfile): string {
+  const parts: string[] = [];
+  if (profile.heightCm?.trim()) parts.push(`Height: ${profile.heightCm} cm`);
+  if (profile.weightKg?.trim()) parts.push(`Weight: ${profile.weightKg} kg`);
+  if (profile.underlyingConditions?.trim()) parts.push(`Underlying conditions: ${profile.underlyingConditions}`);
+  if (profile.concerns?.trim()) parts.push(`Health concerns or notes: ${profile.concerns}`);
+  return parts.join("\n");
+}
+
 export async function analyzeDrugInteractions(
   drugNames: string[],
-  userContext: string = "women's health"
+  userContext: string = "women's health",
+  profile?: AnalysisProfile | null
 ): Promise<string> {
+  const hasProfile =
+    profile &&
+    (profile.underlyingConditions?.trim() ||
+      profile.concerns?.trim() ||
+      profile.heightCm?.trim() ||
+      profile.weightKg?.trim());
+
+  const profileSection = hasProfile
+    ? `
+
+USER PROFILE (personalize the analysis using this):
+${formatProfileForPrompt(profile!)}
+
+When the user has provided profile data above:
+- Bold any potential side effects or interactions that are especially relevant to this user (use **bold** markdown).
+- For each such item, add a short explanation starting with "Why this matters for you:" so the user understands the relevance to their profile.
+- Do not use emojis anywhere in your response.
+- You may use checkboxes in lists: use "- [ ]" for an unchecked item and "- [x]" for a checked/completed item.`
+    : `
+
+Formatting rules: Do not use emojis. You may use checkboxes in lists: "- [ ]" for unchecked and "- [x]" for checked. Use **bold** for drug names and important terms.`;
+
   const prompt = `You are a pharmaceutical expert specializing in women's health.
 
 Analyze the following drugs for potential interactions and their specific effects on women's health:
@@ -38,6 +78,7 @@ Please provide:
 5. Recommendations for monitoring or usage
 
 Context: ${userContext}
+${profileSection}
 
 Be detailed but concise, and always recommend consulting with a healthcare provider.`;
 
