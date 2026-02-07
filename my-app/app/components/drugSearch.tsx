@@ -104,7 +104,7 @@ export default function DrugSearch({ onSearch, isLoading = false }: DrugSearchPr
             disabled={isLoading || !input.trim() || fetchingDrug !== null}
             className="px-6 py-2 bg-[rgb(205,160,177)] text-white rounded-lg hover:bg-[rgb(185,140,157)] transition-colors disabled:opacity-50"
           >
-            Add Drug
+            Query
           </button>
         </div>
 
