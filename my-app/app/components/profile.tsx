@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 const PROFILE_STORAGE_KEY = "pharmashe-profile";
 
@@ -69,18 +69,23 @@ function saveProfile(data: ProfileData): void {
 export default function Profile() {
   const [profile, setProfile] = useState<ProfileData>(defaultProfile);
   const [mounted, setMounted] = useState(false);
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
     setProfile(loadProfile());
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    saveProfile(profile);
+  }, [profile]);
+
   const update = useCallback((updates: Partial<ProfileData>) => {
-    setProfile((prev) => {
-      const next = { ...prev, ...updates };
-      saveProfile(next);
-      return next;
-    });
+    setProfile((prev) => ({ ...prev, ...updates }));
   }, []);
 
   const handleClearProfile = useCallback(() => {

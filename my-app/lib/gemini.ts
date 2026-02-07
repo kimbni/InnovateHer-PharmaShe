@@ -1,18 +1,26 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const apiKey = process.env.GEMINI_API_KEY;
+const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 
-if (!apiKey) {
-  throw new Error("API_KEY is not set");
+let genAI: GoogleGenerativeAI | null = null;
+
+function getGenAI(): GoogleGenerativeAI {
+  if (!apiKey) {
+    throw new Error(
+      "NEXT_PUBLIC_GEMINI_API_KEY is not set. Please add it to your .env.local file."
+    );
+  }
+  if (!genAI) {
+    genAI = new GoogleGenerativeAI(apiKey);
+  }
+  return genAI;
 }
-
-const genAI = new GoogleGenerativeAI(apiKey);
 
 export async function analyzeDrugInteractions(
   drugNames: string[],
   userContext: string = "women's health"
 ): Promise<string> {
-  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+  const model = getGenAI().getGenerativeModel({ model: "gemini-pro" });
 
   const prompt = `You are a pharmaceutical expert specializing in women's health.
 
@@ -43,7 +51,7 @@ Be detailed but concise, and always recommend consulting with a healthcare provi
 export async function getDrugSideEffects(
   drugName: string
 ): Promise<string> {
-  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+  const model = getGenAI().getGenerativeModel({ model: "gemini-pro" });
 
   const prompt = `Provide a comprehensive overview of side effects for ${drugName}, specifically noting any that may be more common or severe in women. Include:
 1. Common side effects
@@ -65,7 +73,7 @@ Keep the response concise and factual.`;
 export async function getWomenHealthGuidance(
   drugName: string
 ): Promise<string> {
-  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+  const model = getGenAI().getGenerativeModel({ model: "gemini-pro" });
 
   const prompt = `Provide women's health specific guidance for ${drugName}. Include:
 1. How this drug affects women differently than men (if applicable)
