@@ -1,27 +1,30 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenAI } from "@google/genai";
 
-const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
-
-let genAI: GoogleGenerativeAI | null = null;
-
-function getGenAI(): GoogleGenerativeAI {
-  if (!apiKey) {
+// Use server-only env var (not NEXT_PUBLIC_) so the key is never exposed to the client
+function getApiKey(): string {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey || apiKey.trim() === "") {
     throw new Error(
-      "NEXT_PUBLIC_GEMINI_API_KEY is not set. Please add it to your .env.local file."
+      "GEMINI_API_KEY is not set. Please add GEMINI_API_KEY=your_key to .env.local and restart the dev server."
     );
   }
-  if (!genAI) {
-    genAI = new GoogleGenerativeAI(apiKey);
-  }
-  return genAI;
+  return apiKey.trim();
 }
+
+// Lazy-initialize so the key is read on the server when first used, not at import time.
+let ai: GoogleGenAI | null = null;
+
+function getClient(): GoogleGenAI {
+  if (!ai) ai = new GoogleGenAI({ apiKey: getApiKey() });
+  return ai;
+}
+
+const DEFAULT_MODEL = "gemini-3-flash-preview";
 
 export async function analyzeDrugInteractions(
   drugNames: string[],
   userContext: string = "women's health"
 ): Promise<string> {
-  const model = getGenAI().getGenerativeModel({ model: "gemini-pro" });
-
   const prompt = `You are a pharmaceutical expert specializing in women's health.
 
 Analyze the following drugs for potential interactions and their specific effects on women's health:
@@ -39,20 +42,21 @@ Context: ${userContext}
 Be detailed but concise, and always recommend consulting with a healthcare provider.`;
 
   try {
-    const result = await model.generateContent(prompt);
-    const response = result.response;
-    return response.text();
+    const response = await getClient().models.generateContent({
+      model: DEFAULT_MODEL,
+      contents: prompt,
+    });
+    return response.text ?? "";
   } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
     console.error("Error calling Gemini API:", error);
-    throw new Error("Failed to analyze drugs with Gemini API");
+    throw new Error(
+      `Failed to analyze drugs with Gemini API. ${message} Please make sure GEMINI_API_KEY is set in .env.local and the key is valid.`
+    );
   }
 }
 
-export async function getDrugSideEffects(
-  drugName: string
-): Promise<string> {
-  const model = getGenAI().getGenerativeModel({ model: "gemini-pro" });
-
+export async function getDrugSideEffects(drugName: string): Promise<string> {
   const prompt = `Provide a comprehensive overview of side effects for ${drugName}, specifically noting any that may be more common or severe in women. Include:
 1. Common side effects
 2. Serious side effects
@@ -61,20 +65,18 @@ export async function getDrugSideEffects(
 Keep the response concise and factual.`;
 
   try {
-    const result = await model.generateContent(prompt);
-    const response = result.response;
-    return response.text();
+    const response = await getClient().models.generateContent({
+      model: DEFAULT_MODEL,
+      contents: prompt,
+    });
+    return response.text ?? "";
   } catch (error) {
     console.error("Error calling Gemini API:", error);
     throw new Error("Failed to retrieve side effects");
   }
 }
 
-export async function getWomenHealthGuidance(
-  drugName: string
-): Promise<string> {
-  const model = getGenAI().getGenerativeModel({ model: "gemini-pro" });
-
+export async function getWomenHealthGuidance(drugName: string): Promise<string> {
   const prompt = `Provide women's health specific guidance for ${drugName}. Include:
 1. How this drug affects women differently than men (if applicable)
 2. Hormonal interaction considerations
@@ -85,9 +87,11 @@ export async function getWomenHealthGuidance(
 Be thorough and evidence-based.`;
 
   try {
-    const result = await model.generateContent(prompt);
-    const response = result.response;
-    return response.text();
+    const response = await getClient().models.generateContent({
+      model: DEFAULT_MODEL,
+      contents: prompt,
+    });
+    return response.text ?? "";
   } catch (error) {
     console.error("Error calling Gemini API:", error);
     throw new Error("Failed to retrieve women's health guidance");

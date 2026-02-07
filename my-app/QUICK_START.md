@@ -7,7 +7,7 @@
 1. Create a file named `.env.local` in the `my-app` directory
 2. Add this line:
    ```
-   NEXT_PUBLIC_GEMINI_API_KEY=your_api_key_here
+   GEMINI_API_KEY=your_api_key_here
    ```
 3. Get your API key from [Google AI Studio](https://aistudio.google.com/app/apikey)
 

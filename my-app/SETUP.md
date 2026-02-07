@@ -41,7 +41,7 @@ PharmaShe is a comprehensive drug analysis platform specifically designed to ana
 
    Edit `.env.local` and add your Gemini API key:
    ```
-   NEXT_PUBLIC_GEMINI_API_KEY=your_actual_api_key_here
+   GEMINI_API_KEY=your_actual_api_key_here
    ```
 
    **How to get a Gemini API Key:**
@@ -61,7 +61,7 @@ PharmaShe is a comprehensive drug analysis platform specifically designed to ana
 ## How to Use
 
 1. **Enter Medications**: Type the name of a medication in the search box
-2. **Add Multiple Drugs**: Click "Add Drug" to include additional medications
+2. **Add Multiple Drugs**: Click "Query" to include additional medications
 3. **Analyze**: Click "Analyze Interactions" to get a comprehensive report
 4. **Review Results**: The analysis will show:
    - Potential drug-drug interactions
