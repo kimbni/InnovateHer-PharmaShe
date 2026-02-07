@@ -106,7 +106,7 @@ export default function DrugSearch({ onSearch, isLoading = false }: DrugSearchPr
             type="button"
             onClick={handleAddDrug}
             disabled={isLoading || !input.trim() || fetchingDrug !== null}
-            className="px-6 py-2 bg-[rgb(205,160,177)] text-white rounded-lg hover:bg-[rgb(185,140,157)] transition-colors disabled:opacity-50"
+            className="px-6 py-2 bg-[rgb(205,160,177)] text-gray-700 rounded-lg hover:bg-[rgb(185,140,157)] transition-colors disabled:opacity-50"
           >
             Query
           </button>
@@ -145,7 +145,7 @@ export default function DrugSearch({ onSearch, isLoading = false }: DrugSearchPr
                         <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1">
                           Active ingredients
                         </p>
-                        <ul className="text-sm text-gray-700 list-disc list-inside space-y-0.5">
+                        <ul className="text-sm text-black list-disc list-inside space-y-0.5">
                           {details.activeIngredients.map((ing, i) => (
                             <li key={i}>{ing}</li>
                           ))}

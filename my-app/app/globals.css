@@ -48,14 +48,12 @@ body {
 }
 
 .gradient-header {
-  @apply bg-gradient-to-r from-[rgb(163,75,103)] to-[rgb(86,109,150)] text-white;
+  @apply bg-gradient-to-b from-[rgb(163,75,103)] to-[rgb(205,160,177)] text-white;
 }
 
 /* Input / textarea typed text */
 .card input,
 .card textarea {
-  @apply text-gray-800 dark:text-gray-100
-         placeholder:text-gray-400 dark:placeholder:text-gray-500;
+  @apply text-black dark:text-black
+         placeholder:text-black dark:placeholder:text-black;
 }
-
-

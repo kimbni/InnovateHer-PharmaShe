@@ -2,7 +2,7 @@
 
  import { useState, useEffect, useCallback, useRef } from "react";
 
- const PROFILE_STORAGE_KEY = "pharmashe-profile";
+ export const PROFILE_STORAGE_KEY = "pharmashe-profile";
 
  export interface ProfileData {
    heightCm: string;
@@ -98,7 +98,7 @@
    if (!mounted) {
      return (
        <div className="card">
-         <p className="text-gray-800 dark:text-gray-300">Loading profile…</p>
+         <p className="text-black dark:text-black-300">Loading profile…</p>
        </div>
      );
    }
@@ -111,7 +111,7 @@
    return (
      <div className="card max-w-2xl mx-auto">
        <h2 className="text-2xl font-bold mb-4 text-[rgb(163,75,103)]">My Profile</h2>
-       <p className="text-gray-800 dark:text-gray-300 mb-6">
+       <p className="text-black dark:text-black-300 mb-6">
          Your information is stored only on this device and is used to personalize drug considerations.
          Clear it anytime using the button at the bottom.
        </p>
@@ -119,7 +119,7 @@
        <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
            <div>
-             <label htmlFor="height" className="block text-sm font-medium text-gray-800 dark:text-gray-300 mb-1">
+             <label htmlFor="height" className="block text-sm font-medium text-black dark:text-black-300 mb-1">
                Height (cm)
              </label>
              <input
@@ -133,11 +133,11 @@
                placeholder="e.g. 165"
                className="w-full px-4 py-2 border border-[rgb(205,160,177)] rounded-lg
                           focus:outline-none focus:ring-2 focus:ring-[rgb(163,75,103)]
-                          text-black dark:text-gray-100 dark:placeholder:text-gray-400 dark:placeholder:text-gray-500"
+                          text-black placeholder:text-black-500 dark:text-black-100 dark:placeholder:text-black-400"
              />
            </div>
            <div>
-             <label htmlFor="weight" className="block text-sm font-medium text-gray-800 dark:text-gray-300 mb-1">
+             <label htmlFor="weight" className="block text-sm font-medium text-black dark:text-black-300 mb-1">
                Weight (kg)
              </label>
              <input
@@ -151,28 +151,28 @@
                placeholder="e.g. 65"
                className="w-full px-4 py-2 border border-[rgb(205,160,177)] rounded-lg
                           focus:outline-none focus:ring-2 focus:ring-[rgb(163,75,103)]
-                          text-black dark:text-gray-100 dark:placeholder:text-gray-400 dark:placeholder:text-gray-500"
+                          text-black placeholder:text-black-500 dark:text-black-100 dark:placeholder:text-black-400"
              />
            </div>
          </div>
 
          {bmi !== null && (
-           <div className="p-4 rounded-lg bg-[rgb(255,250,252)] dark:bg-gray-800 border border-[rgb(205,160,177)]">
+           <div className="p-4 rounded-lg bg-[rgb(255,250,252)] dark:bg-black-800 border border-[rgb(205,160,177)]">
              <h3 className="text-lg font-semibold text-[rgb(163,75,103)] mb-2">BMI Calculator</h3>
-             <p className="text-2xl font-bold text-gray-800 dark:text-gray-100">
-               {bmi} <span className="text-base font-normal text-gray-600 dark:text-gray-300">kg/m²</span>
+             <p className="text-2xl font-bold text-black dark:text-black-100">
+               {bmi} <span className="text-base font-normal text-black-600 dark:text-black-300">kg/m²</span>
              </p>
              {bmiCategory && (
-               <p className="text-sm text-gray-800 dark:text-gray-300 mt-1">Category: {bmiCategory}</p>
+               <p className="text-sm text-black dark:text-black-300 mt-1">Category: {bmiCategory}</p>
              )}
-             <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
+             <p className="text-xs text-black-600 dark:text-black-400 mt-2">
                This is for reference only. Discuss weight and health goals with your provider.
              </p>
            </div>
          )}
 
          <div>
-           <label htmlFor="conditions" className="block text-sm font-medium text-gray-800 dark:text-gray-300 mb-1">
+           <label htmlFor="conditions" className="block text-sm font-medium text-black dark:text-black-300 mb-1">
              Underlying conditions
            </label>
            <textarea
@@ -183,12 +183,12 @@
              placeholder="e.g. hypertension, type 2 diabetes, anxiety"
              className="w-full px-4 py-2 border border-[rgb(205,160,177)] rounded-lg
                         focus:outline-none focus:ring-2 focus:ring-[rgb(163,75,103)]
-                        text-black dark:text-gray-100 dark:placeholder:text-gray-400 dark:placeholder:text-gray-500"
+                        text-black placeholder:text-black-500 dark:text-black-100 dark:placeholder:text-black-400"
            />
          </div>
 
          <div>
-           <label htmlFor="concerns" className="block text-sm font-medium text-gray-800 dark:text-gray-300 mb-1">
+           <label htmlFor="concerns" className="block text-sm font-medium text-black dark:text-black-300 mb-1">
              Health concerns or notes
            </label>
            <textarea
@@ -199,11 +199,11 @@
              placeholder="e.g. pregnancy plans, breastfeeding, drug sensitivities"
              className="w-full px-4 py-2 border border-[rgb(205,160,177)] rounded-lg
                         focus:outline-none focus:ring-2 focus:ring-[rgb(163,75,103)]
-                        text-black dark:text-gray-100 dark:placeholder:text-gray-400 dark:placeholder:text-gray-500"
+                        text-black placeholder:text-black-500 dark:text-black-100 dark:placeholder:text-black-400"
            />
          </div>
 
-         <p className="text-sm text-gray-800 dark:text-gray-300">
+         <p className="text-sm text-black dark:text-black-300">
            Data is saved automatically. It is only stored on this device and is not sent to any server
            unless you use the drug analysis feature with context.
          </p>
