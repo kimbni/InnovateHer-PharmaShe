@@ -6,6 +6,10 @@ import DrugSearch from "./components/drugSearch";
 import AnalysisResults from "./components/analysisResults";
 import { analyzeDrugInteractions } from "@/lib/gemini";
 
+import dynamic from "next/dynamic";
+
+
+
 export default function Home() {
   const [analysis, setAnalysis] = useState<string | null>(null);
   const [selectedDrugs, setSelectedDrugs] = useState<string[]>([]);
