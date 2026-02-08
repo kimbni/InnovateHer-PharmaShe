@@ -1,14 +1,24 @@
 import Profile from "../components/profile";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function ProfilePage() {
   return (
     <div className="min-h-screen gradient-header">
       <header className="py-8 px-6 text-white shadow-lg">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <div>
-            <h1 className="text-4xl font-bold mb-2">PharmaShe</h1>
-            <p className="text-lg opacity-90">Women&apos;s Health Drug Interaction & Analysis Platform</p>
+          <div className="flex items-center gap-4">
+            <Image
+              src="/logo.png"
+              alt="PharmaShe Logo"
+              width={100}
+              height={100}
+              className="rounded-lg"
+            />
+            <div>
+              <h1 className="text-4xl font-bold mb-2">PharmaShe</h1>
+              <p className="text-lg opacity-90">Women&apos;s Health Drug Interaction & Analysis Platform</p>
+            </div>
           </div>
           <Link
             href="/"
