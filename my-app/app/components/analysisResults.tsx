@@ -213,17 +213,17 @@ export default function AnalysisResults({
 
   const mdComponents: Components = {
     h1: ({ children }) => (
-      <h1 className="text-xl font-bold text-[rgb(163,75,103)] mt-6 mb-2 first:mt-0">
+      <h1 className="text-xl font-bold text-[rgb(163,75,103)] mt-6 mb-2 first:mt-0" style={{ fontFamily: "var(--font-league-spartan)" }}>
         {processTextContent(children)}
       </h1>
     ),
     h2: ({ children }) => (
-      <h2 className="text-lg font-bold text-[rgb(163,75,103)] mt-5 mb-2">
+      <h2 className="text-lg font-bold text-[rgb(163,75,103)] mt-5 mb-2" style={{ fontFamily: "var(--font-league-spartan)" }}>
         {processTextContent(children)}
       </h2>
     ),
     h3: ({ children }) => (
-      <h3 className="text-base font-bold text-[rgb(86,109,150)] mt-4 mb-2">
+      <h3 className="text-base font-bold text-[rgb(86,109,150)] mt-4 mb-2" style={{ fontFamily: "var(--font-league-spartan)" }}>
         {processTextContent(children)}
       </h3>
     ),
@@ -273,7 +273,7 @@ export default function AnalysisResults({
       <div className="card">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-2xl font-bold text-[rgb(163,75,103)] mb-2">
+            <h2 className="text-2xl font-bold text-[rgb(163,75,103)] mb-2" style={{ fontFamily: "var(--font-league-spartan)" }}>
               Analysis Results
             </h2>
             <p className="text-sm text-gray-600">

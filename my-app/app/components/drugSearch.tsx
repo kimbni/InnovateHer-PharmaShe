@@ -82,7 +82,7 @@ export default function DrugSearch({ onSearch, isLoading = false }: DrugSearchPr
 
   return (
     <div className="card min-h-96">
-      <h2 className="text-2xl font-bold mb-4 text-[rgb(163,75,103)]">Drug Analysis</h2>
+      <h2 className="text-2xl font-bold mb-4 text-[rgb(163,75,103)]" style={{ fontFamily: "var(--font-league-spartan)" }}>Drug Analysis</h2>
       <p className="text-gray-600 mb-6">
         Enter one or more medications to analyze interactions and women&apos;s health considerations.
         Active ingredients from the FDA database are shown below.
@@ -120,7 +120,7 @@ export default function DrugSearch({ onSearch, isLoading = false }: DrugSearchPr
 
         {drugs.length > 0 && (
           <div className="space-y-2">
-            <h3 className="font-semibold text-gray-700">Selected Drugs & Active Ingredients</h3>
+            <h3 className="font-semibold text-gray-700" style={{ fontFamily: "var(--font-league-spartan)" }}>Selected Drugs & Active Ingredients</h3>
             <div className="flex flex-col gap-3">
               {drugs.map((drug) => {
                 const details = drugDetails[drug];

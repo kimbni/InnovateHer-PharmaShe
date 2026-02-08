@@ -88,7 +88,7 @@ export default function DictionaryTooltip({
       className="w-80 bg-white rounded-lg shadow-2xl border-2 border-[rgb(163,75,103)] p-4"
     >
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-lg font-bold text-[rgb(163,75,103)] capitalize">
+        <h3 className="text-lg font-bold text-[rgb(163,75,103)] capitalize" style={{ fontFamily: "var(--font-league-spartan)" }}>
           {word}
         </h3>
         <button

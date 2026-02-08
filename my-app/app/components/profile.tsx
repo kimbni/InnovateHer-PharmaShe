@@ -110,7 +110,7 @@
 
    return (
      <div className="card max-w-2xl mx-auto">
-       <h2 className="text-2xl font-bold mb-4 text-[rgb(163,75,103)]">My Profile</h2>
+       <h2 className="text-2xl font-bold mb-4 text-[rgb(163,75,103)]" style={{ fontFamily: "var(--font-league-spartan)" }}>My Profile</h2>
        <p className="text-black mb-6">
          Your information is stored only on this device and is used to personalize drug considerations.
          Clear it anytime using the button at the bottom.
@@ -158,7 +158,7 @@
 
          {bmi !== null && (
            <div className="p-4 rounded-lg bg-[rgb(255,250,252)] border border-[rgb(205,160,177)]">
-             <h3 className="text-lg font-semibold text-[rgb(163,75,103)] mb-2">BMI Calculator</h3>
+             <h3 className="text-lg font-semibold text-[rgb(163,75,103)] mb-2" style={{ fontFamily: "var(--font-league-spartan)" }}>BMI Calculator</h3>
              <p className="text-2xl font-bold text-black">
                {bmi} <span className="text-base font-normal text-black">kg/m²</span>
              </p>

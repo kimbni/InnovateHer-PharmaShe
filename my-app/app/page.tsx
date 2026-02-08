@@ -87,7 +87,7 @@ export default function Home() {
               className="rounded-lg"
             />
             <div>
-              <h1 className="text-4xl font-bold mb-2">PharmaShe</h1>
+              <h1 className="text-4xl font-bold mb-2" style={{ fontFamily: "var(--font-league-spartan)" }}>PharmaShe</h1>
               <p className="text-lg opacity-90">
                 Women&apos;s Health Drug Interaction & Analysis Platform
               </p>
@@ -126,7 +126,7 @@ export default function Home() {
               {error && (
                 <div className="card bg-red-50 border-red-300">
                   <div className="text-red-800">
-                    <h3 className="font-bold mb-2">Error</h3>
+                    <h3 className="font-bold mb-2" style={{ fontFamily: "var(--font-league-spartan)" }}>Error</h3>
                     <p>{error}</p>
                     <p className="mt-2 text-sm">
                       Please make sure you have configured your Gemini API key in .env.local
@@ -169,7 +169,7 @@ export default function Home() {
         {/* Information Section */}
         <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="card">
-            <h3 className="text-xl font-bold text-[rgb(163,75,103)] mb-3">
+            <h3 className="text-xl font-bold text-[rgb(163,75,103)] mb-3" style={{ fontFamily: "var(--font-league-spartan)" }}>
               Why Women&apos;s Health Matters
             </h3>
             <ul className="space-y-2 text-sm text-gray-700">
@@ -193,7 +193,7 @@ export default function Home() {
           </div>
 
           <div className="card">
-            <h3 className="text-xl font-bold text-[rgb(86,109,150)] mb-3">
+            <h3 className="text-xl font-bold text-[rgb(86,109,150)] mb-3" style={{ fontFamily: "var(--font-league-spartan)" }}>
               How to Use PharmaShe
             </h3>
             <ol className="space-y-2 text-sm text-gray-700">

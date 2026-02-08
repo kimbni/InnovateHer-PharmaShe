@@ -16,7 +16,7 @@ export default function ProfilePage() {
               className="rounded-lg"
             />
             <div>
-              <h1 className="text-4xl font-bold mb-2">PharmaShe</h1>
+              <h1 className="text-4xl font-bold mb-2" style={{ fontFamily: "var(--font-league-spartan)" }}>PharmaShe</h1>
               <p className="text-lg opacity-90">Women&apos;s Health Drug Interaction & Analysis Platform</p>
             </div>
           </div>
