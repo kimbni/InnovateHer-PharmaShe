@@ -4,8 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import DrugSearch from "./components/drugSearch";
 import AnalysisResults from "./components/analysisResults";
-
-import dynamic from "next/dynamic";
+import { PROFILE_STORAGE_KEY, type ProfileData } from "./components/profile";
 
 
 
@@ -20,6 +19,31 @@ export default function Home() {
     setError(null);
     setSelectedDrugs(drugs);
 
+    let profile: Partial<ProfileData> | null = null;
+    if (typeof window !== "undefined") {
+      try {
+        const raw = localStorage.getItem(PROFILE_STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw) as Partial<ProfileData>;
+          if (
+            parsed.underlyingConditions?.trim() ||
+            parsed.concerns?.trim() ||
+            parsed.heightCm?.trim() ||
+            parsed.weightKg?.trim()
+          ) {
+            profile = {
+              heightCm: parsed.heightCm ?? "",
+              weightKg: parsed.weightKg ?? "",
+              underlyingConditions: parsed.underlyingConditions ?? "",
+              concerns: parsed.concerns ?? "",
+            };
+          }
+        }
+      } catch {
+        // ignore invalid profile
+      }
+    }
+
     try {
       const res = await fetch("/api/analyze", {
         method: "POST",
@@ -27,6 +51,7 @@ export default function Home() {
         body: JSON.stringify({
           drugs,
           context: "women's health analysis",
+          profile: profile ?? undefined,
         }),
       });
       const data = await res.json();
@@ -51,7 +76,7 @@ export default function Home() {
     <div className="min-h-screen gradient-header">
       {/* Header */}
       <header className="py-8 px-6 text-white shadow-lg">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div>
             <h1 className="text-4xl font-bold mb-2">PharmaShe</h1>
             <p className="text-lg opacity-90">
@@ -60,74 +85,74 @@ export default function Home() {
           </div>
           <Link
             href="/profile"
-            className="px-4 py-2 rounded-lg bg-white/20 hover:bg-white/30 transition-colors text-sm font-medium"
+            className="px-4 py-2 rounded-lg bg-[var(--color-blue)] hover:bg-[var(--color-blue-hover)] transition-colors text-sm font-medium text-white"
           >
             My Profile
           </Link>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="max-w-6xl mx-auto py-12 px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column - Search */}
-          <div className="lg:col-span-1">
+      {/* Main Content - side by side: left sticky, right scrollable */}
+      <main className="max-w-7xl mx-auto py-12 px-6 w-full">
+        <div className="flex flex-col lg:flex-row gap-8 lg:items-start">
+          {/* Left: Drug Search - stays in view while page scrolls */}
+          <div className="w-full lg:w-1/2 lg:min-w-0 lg:sticky lg:top-8 lg:self-start shrink-0">
             <DrugSearch onSearch={handleSearch} isLoading={isLoading} />
           </div>
 
-          {/* Right Column - Results */}
-          <div className="lg:col-span-2">
-            {isLoading && (
-              <div className="card">
-                <div className="flex items-center justify-center h-96">
-                  <div className="text-center">
-                    <div className="animate-spin rounded-full h-12 w-12 border-4 border-[rgb(205,160,177)] border-t-[rgb(163,75,103)] mx-auto mb-4"></div>
-                    <p className="text-gray-600">Analyzing drug interactions...</p>
+          {/* Right: Results - scrolls with page */}
+          <div className="w-full lg:w-1/2 flex flex-col">
+              {isLoading && (
+                <div className="card">
+                  <div className="flex items-center justify-center h-96">
+                    <div className="text-center">
+                      <div className="animate-spin rounded-full h-12 w-12 border-4 border-[rgb(205,160,177)] border-t-[rgb(163,75,103)] mx-auto mb-4"></div>
+                      <p className="text-gray-600">Analyzing drug interactions...</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {error && (
-              <div className="card bg-red-50 border-red-300">
-                <div className="text-red-800">
-                  <h3 className="font-bold mb-2">Error</h3>
-                  <p>{error}</p>
-                  <p className="mt-2 text-sm">
-                    Please make sure you have configured your Gemini API key in .env.local
-                  </p>
+              {error && (
+                <div className="card bg-red-50 border-red-300">
+                  <div className="text-red-800">
+                    <h3 className="font-bold mb-2">Error</h3>
+                    <p>{error}</p>
+                    <p className="mt-2 text-sm">
+                      Please make sure you have configured your Gemini API key in .env.local
+                    </p>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {analysis && !isLoading && (
-              <AnalysisResults
-                analysis={analysis}
-                drugs={selectedDrugs}
-                onNewSearch={handleNewSearch}
-              />
-            )}
+              {analysis && !isLoading && (
+                <AnalysisResults
+                  analysis={analysis}
+                  drugs={selectedDrugs}
+                  onNewSearch={handleNewSearch}
+                />
+              )}
 
-            {!analysis && !isLoading && !error && (
-              <div className="card h-96 flex items-center justify-center">
-                <div className="text-center text-gray-500">
-                  <svg
-                    className="mx-auto mb-4 w-12 h-12 opacity-40"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 6v6m0 0v6m0-6h6m0 0h6m0-11a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                  <p>Enter drugs above to get started</p>
+              {!analysis && !isLoading && !error && (
+                <div className="card h-96 flex items-center justify-center">
+                  <div className="text-center text-gray-500">
+                    <svg
+                      className="mx-auto mb-4 w-12 h-12 opacity-40"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 6v6m0 0v6m0-6h6m0 0h6m0-11a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    <p>Enter drugs to the left to get started</p>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
           </div>
         </div>
 
@@ -185,7 +210,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="bg-[rgb(86,109,150)] text-white py-8 mt-16">
-        <div className="max-w-6xl mx-auto px-6 text-center text-sm">
+        <div className="max-w-7xl mx-auto px-6 text-center text-sm">
           <p className="mb-3">
             PharmaShe is an educational tool providing drug interaction information. Always
             consult healthcare professionals before making medication decisions.
