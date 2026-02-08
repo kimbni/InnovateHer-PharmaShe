@@ -38,10 +38,32 @@ function formatProfileForPrompt(profile: AnalysisProfile): string {
   return parts.join("\n");
 }
 
+/** Map from drug name to list of active ingredient names (from FDA). */
+export type ActiveIngredientsByDrug = Record<string, string[]>;
+
+function formatDrugsAndIngredients(
+  drugNames: string[],
+  activeIngredientsByDrug?: ActiveIngredientsByDrug
+): string {
+  if (!activeIngredientsByDrug || Object.keys(activeIngredientsByDrug).length === 0) {
+    return `Drugs: ${drugNames.join(", ")}`;
+  }
+  return drugNames
+    .map((name) => {
+      const ingredients = activeIngredientsByDrug[name];
+      if (ingredients && ingredients.length > 0) {
+        return `${name} (active ingredients: ${ingredients.join(", ")})`;
+      }
+      return name;
+    })
+    .join("\n");
+}
+
 export async function analyzeDrugInteractions(
   drugNames: string[],
   userContext: string = "women's health",
-  profile?: AnalysisProfile | null
+  profile?: AnalysisProfile | null,
+  activeIngredientsByDrug?: ActiveIngredientsByDrug
 ): Promise<string> {
   const hasProfile =
     profile &&
@@ -58,16 +80,21 @@ ${formatProfileForPrompt(profile!)}
 
 When the user has provided profile data above:
 - Directly address their underlying conditions, health concerns, and any other profile details in your analysis. Tailor drug results to speak to their specific situation.
+- Consider weight and height when relevant (e.g., weight-based dosing, BMI-related risks, or drug distribution). Omit or downplay weight/height if they do not meaningfully affect the analysis for these drugs.
 - Bold any potential side effects or interactions that are especially relevant to this user (use **bold** markdown).
 - For each such item, add a short explanation starting with "Why this matters for you:" so the user understands the relevance to their profile.
 - Do not use emojis anywhere in your response.
 - You may use checkboxes in lists: use "- [ ]" for an unchecked item and "- [x]" for a checked/completed item.`
     : `
 
+The user did not add any profile information. Provide a general summary: cover all listed drugs and active ingredients with women's health considerations, interactions, and side effects, without personalized advice.
 Formatting rules: Do not use emojis. You may use checkboxes in lists: "- [ ]" for unchecked and "- [x]" for checked. Use **bold** for drug names and important terms.`;
 
+  const drugsBlock = formatDrugsAndIngredients(drugNames, activeIngredientsByDrug);
+
   const prompt = `Analyze the following drugs for potential interactions and their specific effects on women's health:
-Drugs: ${drugNames.join(", ")}
+
+${drugsBlock}
 
 Please provide:
 1. Any potential drug-drug interactions
@@ -80,7 +107,8 @@ Context: ${userContext}
 ${profileSection}
 
 Instructions:
-- Be accurate and directly address the queried active ingredients. Be detailed but concise, and always recommend consulting with a healthcare provider.
+- Discuss every listed active ingredient above and the possible effects they could have on the person's profile (or on women's health in general if no profile was provided). Do not skip any active ingredient.
+- Be accurate and detailed but concise. Always recommend consulting with a healthcare provider.
 - Do not state that you are a pharmaceutical expert, that you specialize in women's health, or any similar self-description anywhere in your response.`;
 
   try {

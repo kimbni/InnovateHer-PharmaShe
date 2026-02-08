@@ -10,8 +10,11 @@ export interface DrugInfoFromFDA {
   manufacturer?: string;
 }
 
+/** Map from drug name (as entered) to list of active ingredient names from FDA */
+export type ActiveIngredientsByDrug = Record<string, string[]>;
+
 interface DrugSearchProps {
-  onSearch: (drugs: string[]) => void;
+  onSearch: (drugs: string[], activeIngredientsByDrug?: ActiveIngredientsByDrug) => void;
   isLoading?: boolean;
 }
 
@@ -70,7 +73,10 @@ export default function DrugSearch({ onSearch, isLoading = false }: DrugSearchPr
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (drugs.length > 0) {
-      onSearch(drugs);
+      const activeIngredientsByDrug: ActiveIngredientsByDrug = Object.fromEntries(
+        drugs.map((d) => [d, drugDetails[d]?.activeIngredients ?? []])
+      );
+      onSearch(drugs, activeIngredientsByDrug);
     }
   };
 

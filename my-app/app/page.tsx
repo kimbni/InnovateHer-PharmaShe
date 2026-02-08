@@ -5,8 +5,7 @@ import Link from "next/link";
 import DrugSearch from "./components/drugSearch";
 import AnalysisResults from "./components/analysisResults";
 import { PROFILE_STORAGE_KEY, type ProfileData } from "./components/profile";
-
-
+import type { ActiveIngredientsByDrug } from "./components/drugSearch";
 
 export default function Home() {
   const [analysis, setAnalysis] = useState<string | null>(null);
@@ -14,7 +13,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleSearch = async (drugs: string[]) => {
+  const handleSearch = async (drugs: string[], activeIngredientsByDrug?: ActiveIngredientsByDrug) => {
     setIsLoading(true);
     setError(null);
     setSelectedDrugs(drugs);
@@ -52,6 +51,7 @@ export default function Home() {
           drugs,
           context: "women's health analysis",
           profile: profile ?? undefined,
+          activeIngredientsByDrug: activeIngredientsByDrug ?? undefined,
         }),
       });
       const data = await res.json();
