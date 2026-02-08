@@ -94,9 +94,9 @@ export default function Home() {
 
       {/* Main Content - side by side: left sticky, right scrollable */}
       <main className="max-w-6xl mx-auto py-12 px-6">
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Left: Drug Search - sticky relative to viewer */}
-          <div className="w-full lg:w-1/2 lg:sticky lg:top-12">
+        <div className="flex flex-col lg:flex-row gap-8 lg:items-start">
+          {/* Left: Drug Search - stays in view while page scrolls */}
+          <div className="w-full lg:w-1/2 lg:sticky lg:top-8 lg:self-start shrink-0">
             <div className="w-full max-w-lg">
               <DrugSearch onSearch={handleSearch} isLoading={isLoading} />
             </div>
