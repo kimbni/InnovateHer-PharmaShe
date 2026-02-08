@@ -53,10 +53,11 @@ export async function analyzeDrugInteractions(
   const profileSection = hasProfile
     ? `
 
-USER PROFILE (personalize the analysis using this):
+USER PROFILE (use this to personalize the analysis and directly address the user's situation):
 ${formatProfileForPrompt(profile!)}
 
 When the user has provided profile data above:
+- Directly address their underlying conditions, health concerns, and any other profile details in your analysis. Tailor drug results to speak to their specific situation.
 - Bold any potential side effects or interactions that are especially relevant to this user (use **bold** markdown).
 - For each such item, add a short explanation starting with "Why this matters for you:" so the user understands the relevance to their profile.
 - Do not use emojis anywhere in your response.
@@ -65,9 +66,7 @@ When the user has provided profile data above:
 
 Formatting rules: Do not use emojis. You may use checkboxes in lists: "- [ ]" for unchecked and "- [x]" for checked. Use **bold** for drug names and important terms.`;
 
-  const prompt = `You are a pharmaceutical expert specializing in women's health.
-
-Analyze the following drugs for potential interactions and their specific effects on women's health:
+  const prompt = `Analyze the following drugs for potential interactions and their specific effects on women's health:
 Drugs: ${drugNames.join(", ")}
 
 Please provide:
@@ -80,7 +79,9 @@ Please provide:
 Context: ${userContext}
 ${profileSection}
 
-Be detailed but concise, and always recommend consulting with a healthcare provider.`;
+Instructions:
+- Be accurate and directly address the queried active ingredients. Be detailed but concise, and always recommend consulting with a healthcare provider.
+- Do not state that you are a pharmaceutical expert, that you specialize in women's health, or any similar self-description anywhere in your response.`;
 
   try {
     const response = await getClient().models.generateContent({

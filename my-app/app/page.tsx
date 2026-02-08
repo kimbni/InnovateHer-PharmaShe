@@ -76,7 +76,7 @@ export default function Home() {
     <div className="min-h-screen gradient-header">
       {/* Header */}
       <header className="py-8 px-6 text-white shadow-lg">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div>
             <h1 className="text-4xl font-bold mb-2">PharmaShe</h1>
             <p className="text-lg opacity-90">
@@ -85,7 +85,7 @@ export default function Home() {
           </div>
           <Link
             href="/profile"
-            className="px-4 py-2 rounded-lg bg-white/20 hover:bg-white/30 transition-colors text-sm font-medium"
+            className="px-4 py-2 rounded-lg bg-[var(--color-blue)] hover:bg-[var(--color-blue-hover)] transition-colors text-sm font-medium text-white"
           >
             My Profile
           </Link>
@@ -93,13 +93,11 @@ export default function Home() {
       </header>
 
       {/* Main Content - side by side: left sticky, right scrollable */}
-      <main className="max-w-6xl mx-auto py-12 px-6">
+      <main className="max-w-7xl mx-auto py-12 px-6 w-full">
         <div className="flex flex-col lg:flex-row gap-8 lg:items-start">
           {/* Left: Drug Search - stays in view while page scrolls */}
-          <div className="w-full lg:w-1/2 lg:sticky lg:top-8 lg:self-start shrink-0">
-            <div className="w-full max-w-lg">
-              <DrugSearch onSearch={handleSearch} isLoading={isLoading} />
-            </div>
+          <div className="w-full lg:w-1/2 lg:min-w-0 lg:sticky lg:top-8 lg:self-start shrink-0">
+            <DrugSearch onSearch={handleSearch} isLoading={isLoading} />
           </div>
 
           {/* Right: Results - scrolls with page */}
@@ -212,7 +210,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="bg-[rgb(86,109,150)] text-white py-8 mt-16">
-        <div className="max-w-6xl mx-auto px-6 text-center text-sm">
+        <div className="max-w-7xl mx-auto px-6 text-center text-sm">
           <p className="mb-3">
             PharmaShe is an educational tool providing drug interaction information. Always
             consult healthcare professionals before making medication decisions.
